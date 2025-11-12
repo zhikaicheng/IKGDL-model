@@ -87,12 +87,12 @@ def load_finetune_or_validate_data(file_path, x_met_mean, x_met_std, y_mean, y_s
     num_ec_features = EC_FEATURES
     x_ec = df.iloc[:, ec_start_col : ec_start_col + num_ec_features].values
     if x_ec.shape[1] != num_ec_features:
-        raise ValueError(f"微调/验证数据的极端气候特征列数错误！预期 {num_ec_features}, 实际 {x_ec.shape[1]}")
+        
 
-    # ----------- Debug: 打印shape和类型，防止float类型错误 -----------
+
     print("x_ec shape:", np.shape(x_ec), "type:", type(x_ec))
     if not (isinstance(x_ec, np.ndarray) and x_ec.ndim == 2):
-        raise ValueError(f"x_ec 不是二维数组，实际类型: {type(x_ec)}, shape: {getattr(x_ec, 'shape', None)}, 值: {x_ec}")
+        
     # ----------------------------------------------------------
 
 
@@ -145,7 +145,7 @@ def load_finetune_or_validate_data(file_path, x_met_mean, x_met_std, y_mean, y_s
 
     print("Fine-tune/validate data loaded successfully.")
     
-    # 遥感数据需要填充以匹配气象数据的时间步长
+
     # (样本数, 10, 4) -> (样本数, 29, 4)
     x_rs_padded = np.zeros((x_rs_norm.shape[0], MET_TIMESTEPS, RS_FEATURES))
     x_rs_padded[:, -RS_TIMESTEPS:, :] = x_rs_norm # 将数据放在最后10个时间步
@@ -213,7 +213,7 @@ class KGDL(nn.Module):
 
 
             h_emb_oib = self.oib_out_linear(h_last)
-            rs_emb_oib = self.oib_cov_linear(x_rs).mean(dim=1) # 对时间步求平均
+            rs_emb_oib = self.oib_cov_linear(x_rs).mean(dim=1) 
             ec_emb_oib = self.oib_ec_linear(x_ec)
             
             combined_oib = torch.cat([h_emb_oib, rs_emb_oib, ec_emb_oib], dim=-1)
